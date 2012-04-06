@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+ <script language="JavaScript"
+ src="http://www.geoplugin.net/javascript.gp"
+ type="text/javascript"></script>
+
+ <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+
+<title>Time in country x when its y here</title>
+
+<style type="text/css">
+body{
+	 background:#202020;
+	 //font:bold 10px Arial, Helvetica, sans-serif;
+	 //margin:0;
+	 //padding:0;
+	 //min-width:800px;
+	 color:#bbbbbb; 
+}
+
+.clock_font{
+	 
+}
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('BebasNeue-webfont.eot');
+    src: url('BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('BebasNeue-webfont.woff') format('woff'),
+         url('BebasNeue-webfont.ttf') format('truetype'),
+         url('BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.clock {width:auto; margin:0 auto; padding:auto; color:#fff; font:bold 10px Arial, Helvetica, sans-serif;}
+
+#Date { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:32px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+
+#Date1 { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:36px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+
+ul { width:auto; margin:0 auto; padding:0px; list-style:none; text-align:center; }
+ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
+
+//#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+.point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+
+@-webkit-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
+
+@-moz-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
+</style>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+    
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var current_city = geoplugin_city();
+        var current_country = geoplugin_countryName();
+
+        console.log("Current city: " + current_city + " Country: " + current_country);
+        $("#lft_cap").html(current_city + ", " + current_country);
+
+        // Create two variable with the names of the months and days in an array
+        var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; 
+        var dayNames= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+        
+        // Create a newDate() object
+        var newDate = new Date();
+
+        var offset = -4;
+        var nd = getTimeIn(offset);
+
+        console.log("new date: " + nd );
+        console.log("Day: " + dayNames[nd.getDay()] + " Date: " + nd.getDate() + " MOnth: " + nd.getMonth());
+        nd.setDate(nd.getDate());
+
+        // Extract the current date from Date object
+        newDate.setDate(newDate.getDate());
+
+        // Output the day, date, month and year    
+        $('#Date').html(dayNames[nd.getDay()] + " " + nd.getDate() + ' ' + monthNames[nd.getMonth()] + ' ' + nd.getFullYear());
+
+        // Output the day, date, month and year    
+        $('#Date1').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
+
+        /**
+         * Given a time offset UTC, return date obj
+         */
+        function getTimeIn(utc){
+            var utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+            var nd = new Date(utc + (3600000*offset));            
+            return nd;
+        }
+
+        setInterval( function() {
+	    // Create a newDate() object and extract the seconds of the current time on the visitor's
+	    var seconds = new Date().getSeconds();
+	    // Add a leading zero to seconds value
+	    $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+
+            var sec_b = (getTimeIn(offset)).getSeconds();
+            //console.log("Seconds B: " + sec_b);
+	    $("#sec1").html(( seconds < 10 ? "0" : "" ) + seconds);
+	},1000);
+	
+        setInterval( function() {
+	    // Create a newDate() object and extract the minutes of the current time on the visitor's
+	    var minutes = new Date().getMinutes();
+	    // Add a leading zero to the minutes value
+	    $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+            var ad = getTimeIn(offset);
+            var nd = ad.getMinutes();
+            //console.log("Mins: " + nd);
+	    $("#min1").html(( nd < 10 ? "0" : "" ) + nd);
+        },1000);
+	
+        setInterval( function() {
+	    // Create a newDate() object and extract the hours of the current time on the visitor's
+	    var hours = new Date().getHours();
+            if( hours > 12){
+                hours = parseInt(hours) - parseInt(12);
+            }
+	    // Add a leading zero to the hours value
+	    $("#hours").html(( hours < 10 ? "0" : "" ) + hours);
+
+            var h = getTimeIn(offset);
+            var targetHrs = h.getHours();
+            //console.log("Target Hr: " + targetHrs);
+            if( targetHrs > 12){
+                targetHrs = parseInt(targetHrs) - parseInt(12);
+            }
+	    $("#hours1").html(( targetHrs < 10 ? "0" : "" ) + targetHrs );
+        }, 1000);
+	
+
+        $( "#city" ).autocomplete({
+	    source: function( request, response ) {
+		$.ajax({
+		    url: "http://ws.geonames.org/searchJSON",
+		    dataType: "jsonp",
+		    data: {
+			featureClass: "P",
+			style: "full",
+			maxRows: 3,
+			name_startsWith: request.term
+		    },
+		    success: function( data ) {
+			response( $.map( data.geonames, function( item ) {
+			    return {
+				label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+				value: item.name
+			    }
+			}));
+		    }
+		});
+	    },
+	    minLength: 2,
+	    select: function( event, ui ) {
+		log( ui.item ?
+		     "Selected: " + ui.item.label :
+		     "Nothing selected, input was " + this.value);
+	    },
+	    open: function() {
+		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+	    },
+	    close: function() {
+		$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+	    }
+	});
+        function log( message ) {
+	    $( "<div/>" ).text( message ).prependTo( "#log" );
+	    $( "#log" ).scrollTop( 0 );
+	}
+
+            <!-- end autocomplete copy -->
+    }); 
+
+</script>
+
+</head>
+ <body data-spy="scroll" data-target=".subnav" data-offset="50">
+<br/><br/><br/>
+  <center> <h1>Current time in ...</h1></center>
+<br/><br/><br/> 
+<div class="container">
+
+  <div class="row">
+    <div class="span6">
+      
+      <div class="clock">
+        <div id="Date1"></div>
+        <br/><br/><br/><br/><br/>
+        <ul>
+          <li id="hours"> </li>
+          <li class="point">:</li>
+          <li id="min"> </li>
+          <li class="point">:</li>
+          <li id="sec"> </li>
+        </ul>
+        <br/><br/><br/>
+        <center>
+        <!-- City on left side -->
+        <h3 id="lft_cap"></h3>
+
+        <br/><br/><br/>
+        <!-- <input type="text" id="city" value="">-->
+        </center>
+      </div>
+      
+    </div>
+    
+    <div class="span">
+      <div class="clock">
+        <div id="Date"></div>          
+        <br/><br/><br/><br/><br/>
+        <ul>
+	  <li id="hours1"> </li>
+          <li class="point">:</li>
+          <li id="min1"> </li>
+          <li class="point">:</li>
+          <li id="sec1"> </li>
+        </ul>
+        
+        <br/><br/><br/>
+        <center>
+        <h3 id="rt_cap">Tampa, FL</h3>
+        </center>
+      </div>
+    </div>
+    
+  </div><!-- /row -->
+
+
+      
+  </div>
+
+<!--
+<div class="ui-widget">
+	Result:
+	<div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+</div>      
+-->
+</body>
+</html>
