@@ -4,9 +4,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
- <script language="JavaScript"
- src="http://www.geoplugin.net/javascript.gp"
- type="text/javascript"></script>
+<!-- Plugins -->
 
  <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -17,44 +15,29 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-
-<title>Time in country x when its y here</title>
-
 <style type="text/css">
 body{
 	 background:#202020;
-	 //font:bold 10px Arial, Helvetica, sans-serif;
-	 //margin:0;
-	 //padding:0;
-	 //min-width:800px;
 	 color:#bbbbbb; 
 }
 
-.clock_font{
-	 
-}
 @font-face {
     font-family: 'BebasNeueRegular';
-    src: url('BebasNeue-webfont.eot');
-    src: url('BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
-         url('BebasNeue-webfont.woff') format('woff'),
-         url('BebasNeue-webfont.ttf') format('truetype'),
-         url('BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    src: url('fonts/BebasNeue-webfont.eot');
+    src: url('fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/BebasNeue-webfont.woff') format('woff'),
+         url('fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
 }
 
+#Date, #Date1 { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:32px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+
 .clock {width:auto; margin:0 auto; padding:auto; color:#fff; font:bold 10px Arial, Helvetica, sans-serif;}
-
-#Date { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:32px; text-align:center; text-shadow:0 0 5px #00c6ff; }
-
-#Date1 { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:36px; text-align:center; text-shadow:0 0 5px #00c6ff; }
-
-ul { width:auto; margin:0 auto; padding:0px; list-style:none; text-align:center; }
-ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
-
-//#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+.disp_time { width:auto; margin:0 auto; padding:0px; list-style:none; text-align:center; }
+.time_item { display:inline; font-size:10em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
 .point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
 
 @-webkit-keyframes mymove 
@@ -72,9 +55,27 @@ ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeu
 100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
 }
 
+// Auto complete
+.ui-menu .ui-menu-item a,.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {
+	font-weight: normal;
+	margin: -1px;
+	text-align:left;
+	//font-size:12px;
+        font:bold 10px Arial, Helvetica, sans-serif;
+	}
+.ui-autocomplete-loading { background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat; }
+
 </style>
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+
+<!-- Begin auto-complete cities -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.11/themes/flick/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+<!-- / autocomplete citites -->
+
+<!-- Geo plugin to figure out where you are at location wise -->
+<script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
+
     
 <script type="text/javascript">
 
@@ -96,8 +97,8 @@ ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeu
         var offset = -4;
         var nd = getTimeIn(offset);
 
-        console.log("new date: " + nd );
-        console.log("Day: " + dayNames[nd.getDay()] + " Date: " + nd.getDate() + " MOnth: " + nd.getMonth());
+        console.log("Time B: " + nd );
+        //console.log("Day: " + dayNames[nd.getDay()] + " Date: " + nd.getDate() + " MOnth: " + nd.getMonth());
         nd.setDate(nd.getDate());
 
         // Extract the current date from Date object
@@ -159,50 +160,77 @@ ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeu
         }, 1000);
 	
 
-        $( "#city" ).autocomplete({
-	    source: function( request, response ) {
-		$.ajax({
-		    url: "http://ws.geonames.org/searchJSON",
-		    dataType: "jsonp",
-		    data: {
-			featureClass: "P",
-			style: "full",
-			maxRows: 3,
-			name_startsWith: request.term
-		    },
-		    success: function( data ) {
-			response( $.map( data.geonames, function( item ) {
-			    return {
-				label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-				value: item.name
-			    }
-			}));
-		    }
-		});
-	    },
-	    minLength: 2,
-	    select: function( event, ui ) {
-		log( ui.item ?
-		     "Selected: " + ui.item.label :
-		     "Nothing selected, input was " + this.value);
-	    },
-	    open: function() {
-		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-	    },
-	    close: function() {
-		$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-	    }
-	});
-        function log( message ) {
-	    $( "<div/>" ).text( message ).prependTo( "#log" );
-	    $( "#log" ).scrollTop( 0 );
-	}
+    }); // end document.ready func
 
-            <!-- end autocomplete copy -->
-    }); 
+    /*****************************************************************
+     ** Function take name of city and updates page to show selected
+     ** city's time
+     ****************************************************************/
+    function update_time_for_city_b( location ){
+        console.log("Find time in " + location );
+
+        var api_key = "23da36ffb9090329120604";
+        var t_url = "http://www.worldweatheronline.com/feed/tz.ashx?key="+ api_key+"&q="+location+"&format=json";
+        console.log("URL to get Time API: " + t_url );
+
+        $.ajax({
+            
+            type: "GET",
+            // dataType: "script",
+            
+            url: t_url,
+            //data: "",
+            beforeSend: function(){
+                // alert( "sending " );
+            },
+            error: function( request,error ){
+                alert("error: " + error + " " + request );
+            },
+            success: function(data, textStatus, XMLHttpRequest) {
+                console.log("Output: " + data + ".");
+                console.log("ok " + data + " " + textStatus + " " + XMLHttpRequest);
+                //$("#output").html( "output: " + data + "." );
+                //$("#result").html( "ok " + data +" "+ textStatus +" "+ XMLHttpRequest);
+                return false;                
+            }
+            
+            });
+
+
+    }// end func update_time_for_city_b
+
+    jQuery(function () 
+           {
+	       jQuery("#f_elem_city").autocomplete({
+		   source: function (request, response) {
+		       jQuery.getJSON(
+			   "http://gd.geobytes.com/AutoCompleteCity?callback=?&q="+request.term,
+			   function (data) {
+			       response(data);
+			   }
+		       );
+		   },
+		   minLength: 3,
+		   select: function (event, ui) {
+		       var selectedObj = ui.item;
+		       jQuery("#f_elem_city").val(selectedObj.value);
+                       console.log("Selected city: " + selectedObj.value);
+                       update_time_for_city_b(selectedObj.value);
+		       return false;
+		   },
+		   open: function () {
+		       jQuery(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+		   },
+		   close: function () {
+		       jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+		   }
+	       });
+	       jQuery("#f_elem_city").autocomplete("option", "delay", 100);
+	   });
 
 </script>
 
+<title>what time is it</title>
 </head>
  <body data-spy="scroll" data-target=".subnav" data-offset="50">
 <br/><br/><br/>
@@ -212,59 +240,61 @@ ul li { display:inline; font-size:10em; text-align:center; font-family:'BebasNeu
 
   <div class="row">
     <div class="span6">
-      
-      <div class="clock">
-        <div id="Date1"></div>
-        <br/><br/><br/><br/><br/>
-        <ul>
-          <li id="hours"> </li>
-          <li class="point">:</li>
-          <li id="min"> </li>
-          <li class="point">:</li>
-          <li id="sec"> </li>
-        </ul>
-        <br/><br/><br/>
+
+
         <center>
         <!-- City on left side -->
         <h3 id="lft_cap"></h3>
 
-        <br/><br/><br/>
-        <!-- <input type="text" id="city" value="">-->
         </center>
+      
+      <div class="clock">
+
+        <br/><br/><br/><br/><br/>
+        <ul class="disp_time">
+          <li class="time_item" id="hours"> </li>
+          <li class="point time_item">:</li>
+          <li class="time_item" id="min"> </li>
+          <li class="point time_item">:</li>
+          <li class="time_item" id="sec"> </li>
+        </ul>
+        <br/><br/><br/>
+        <div id="Date1"></div>
       </div>
       
     </div>
     
-    <div class="span">
-      <div class="clock">
-        <div id="Date"></div>          
+    <div class="span6">
+
+        <center>
+          <h3 id="rt_cap">Tampa, FL</h3>
+        </center>
+        <div class="clock">
         <br/><br/><br/><br/><br/>
-        <ul>
-	  <li id="hours1"> </li>
-          <li class="point">:</li>
-          <li id="min1"> </li>
-          <li class="point">:</li>
-          <li id="sec1"> </li>
+        <ul class="disp_time">
+	  <li class="time_item" id="hours1"> </li>
+          <li class="point time_item">:</li>
+          <li class="time_item" id="min1"> </li>
+          <li class="point time_item">:</li>
+          <li class="time_item" id="sec1"> </li>
         </ul>
         
         <br/><br/><br/>
+        <div id="Date"></div>          
         <center>
-        <h3 id="rt_cap">Tampa, FL</h3>
+        <br/><br/><br/>
+        <form action="" method="post" name="form_demo" id="form_demo"
+        enctype="multipart/form-data" onsubmit="return false;">
+          <p>Enter city you want to see time in</p>
+          <input class="ff_elem" type="text" name="ff_nm_from[]" value="" id="f_elem_city"/>
+        </form>
         </center>
       </div>
     </div>
     
-  </div><!-- /row -->
-
-
+  </div><!-- /row -->  
       
-  </div>
+  </div><!-- /container -->
 
-<!--
-<div class="ui-widget">
-	Result:
-	<div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-</div>      
--->
 </body>
 </html>
