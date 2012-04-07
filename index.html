@@ -31,7 +31,9 @@
     }
 
     #Date, #Date1 { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:32px; text-align:center; text-shadow:0 0 5px #00c6ff; }
-    
+
+    .a_block { font-family:Helvetica, sans-serif; font-size:16px;
+    text-align: center; }
     .clock {width:auto; margin:0 auto; padding:auto; color:#fff; font:bold 10px Arial, Helvetica, sans-serif;}
     .disp_time { width:auto; margin:0 auto; padding:0px; list-style:none; text-align:center; }
     .time_item { display:inline; font-size:10em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
@@ -241,15 +243,15 @@ $(document).ready(function() {
 <title>what time is it</title>
 </head>
  <body data-spy="scroll" data-target=".subnav" data-offset="50">
-<br/><br/><br/>
+<br/><br/>
   <center> <h1>Current time in ...</h1></center>
 <br/><br/><br/> 
 <div class="container">
 
+  <hr class="soften">
+    <br>  <br>  <br>
   <div class="row">
     <div class="span6">
-
-
         <center>
         <!-- City on left side -->
         <h3 id="lft_cap"></h3>
@@ -301,8 +303,17 @@ $(document).ready(function() {
     </div>
     
   </div><!-- /row -->  
-      
-  </div><!-- /container -->
+  <br>  <br>  <br>  <br>  <br>
+  <hr class="soften">
 
+
+  <!-- Footer
+      ================================================== -->
+      <footer class="footer">
+        <p class="pull-right"><a href="http://kiranbusi.com">kayman productions</a></p>
+        <p>download and source code available on <a href="http://busilogic.github.com/what-time-is-it/">Github</a></p>
+      </footer>
+
+</div><!-- /container -->
 </body>
 </html>
