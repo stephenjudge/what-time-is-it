@@ -74,27 +74,27 @@
 
 
 <script type="text/javascript">
-  
-$(document).ready(function() {
-    
-    var current_city = geoplugin_city();
-    var current_country = geoplugin_countryName();
-    
-    console.log("Current city: " + current_city + " Country: " + current_country);
-    $("#lft_cap").html(current_city + ", " + current_country);
-    
+
+    //Global variables
+    var offset = -4;  
     // Create two variable with the names of the months and days in an array
     var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; 
     var dayNames= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+
+    var current_city = geoplugin_city();
+    var current_country = geoplugin_countryName();
+   
+$(document).ready(function() {
+      
+    console.log("Current city: " + current_city + " Country: " + current_country);
     
-    // Create a newDate() object
+    //Update time in City A (left side)
+    $("#lft_cap").html(current_city + ", " + current_country);
+        
     var newDate = new Date();
-    
-    var offset = -4;
     var nd = getTimeIn(offset);
     
-    console.log("Time B: " + nd );
-    //console.log("Day: " + dayNames[nd.getDay()] + " Date: " + nd.getDate() + " MOnth: " + nd.getMonth());
+    console.log("Time in City B: " + nd );
     nd.setDate(nd.getDate());
     
     // Extract the current date from Date object
@@ -106,12 +106,13 @@ $(document).ready(function() {
     // Output the day, date, month and year    
     $('#Date1').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
     
-
     // Update all times every 1 second
     setInterval( function(){
         update_time_periodically();
 
     }, 1000);
+
+}); // end document.ready func
 
     // Generic function to update times periodically
     function update_time_periodically(){
@@ -138,6 +139,7 @@ $(document).ready(function() {
         $("#min1").html( padNumber(tb_min));
 
         var tb_hrs = cityb_date.getHours();
+        tb_hrs = make_hrs_human_readable(tb_hrs);
         $("#hours1").html( padNumber(tb_hrs));
         
     }
@@ -165,43 +167,31 @@ $(document).ready(function() {
         return nd;
     }
     // ==== END helper functions for time =============
-    
-    
-}); // end document.ready func
+
+
+     /********
+     ********/
 
     /*****************************************************************
      ** Function take name of city and updates page to show selected
      ** city's time
      ****************************************************************/
     function update_time_for_city_b( location ){
-        console.log("Find time in " + location );
+        //console.log("Find time in " + location );        
 
-        var api_key = "23da36ffb9090329120604";
-        var t_url = "http://www.worldweatheronline.com/feed/tz.ashx?key="+ api_key+"&q="+location+"&format=json";
-        console.log("URL to get Time API: " + t_url );
-
-        $.ajax({
-            
-            type: "GET",
-            // dataType: "script",
-            
-            url: t_url,
-            //data: "",
-            beforeSend: function(){
-                // alert( "sending " );
-            },
-            error: function( request,error ){
-                alert("error: " + error + " " + request );
-            },
-            success: function(data, textStatus, XMLHttpRequest) {
-                console.log("Output: " + data + ".");
-                console.log("ok " + data + " " + textStatus + " " + XMLHttpRequest);
-                //$("#output").html( "output: " + data + "." );
-                //$("#result").html( "ok " + data +" "+ textStatus +" "+ XMLHttpRequest);
-                return false;                
+        // Dynamically modify city time
+        var api_key = "23da36ffb9090329120604";  //API which returns time offset given city name
+        var t_url = "http://www.worldweatheronline.com/feed/tz.ashx?key=23da36ffb9090329120604&q="+ location + "&format=json";
+        console.log("URL: " + t_url );
+        $.ajax({ 
+            type: "GET", 
+            url: t_url, 
+            dataType: "jsonp", 
+            success: function( json){
+                console.log(json) 
             }
-            
             });
+                
     }// end func update_time_for_city_b
 
     jQuery(function () 
@@ -231,7 +221,7 @@ $(document).ready(function() {
 		   }
 	       });
 	       jQuery("#f_elem_city").autocomplete("option", "delay", 100);
-	   });
+	   });// jquery func
 
 </script>
 
