@@ -30,7 +30,11 @@
         font-style: normal;
     }
 
-    #Date, #Date1 { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:32px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+    #Date, #Date1 { 
+        font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; 
+        font-size:32px; 
+        text-align:center; 
+        text-shadow:0 0 5px #00c6ff; }
 
     .a_block { font-family:Helvetica, sans-serif; font-size:16px;
     text-align: center; }
@@ -73,7 +77,6 @@
 
 <!-- Geo plugin to figure out where you are at location wise -->
 <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
-
 
 <script type="text/javascript">
 
@@ -204,6 +207,9 @@ $(document).ready(function() {
 
         //Get value of what user entered and update screen
         $("#rt_cap").html( $("#f_elem_city").val() );
+
+       //Clear input bar indicating ready-ness for next input 
+       $("#f_elem_city").val("");
         
 
 
@@ -300,7 +306,6 @@ $(document).ready(function() {
   </div><!-- /row -->  
   <br>  <br>  <br>  <br>  <br>
   <hr class="soften">
-
 
   <!-- Footer
       ================================================== -->
