@@ -1,0 +1,52 @@
+body{
+    background:#202020;
+    color:#bbbbbb; 
+}
+
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('../fonts/BebasNeue-webfont.eot');
+    src: url('../fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/BebasNeue-webfont.woff') format('woff'),
+    url('../fonts/BebasNeue-webfont.ttf') format('truetype'),
+    url('../fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#Date, #Date1 { 
+    font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; 
+    font-size:32px; 
+    text-align:center; 
+    text-shadow:0 0 5px #00c6ff; }
+
+.a_block { font-family:Helvetica, sans-serif; font-size:16px;
+           text-align: center; }
+.clock {width:auto; margin:0 auto; padding:auto; color:#fff; font:bold 10px Arial, Helvetica, sans-serif;}
+.disp_time { width:auto; margin:0 auto; padding:0px; list-style:none; text-align:center; }
+.time_item { display:inline; font-size:10em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
+.point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+
+@-webkit-keyframes mymove 
+{
+    0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+    50% {opacity:0; text-shadow:none; }
+    100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
+
+@-moz-keyframes mymove 
+{
+    0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+    50% {opacity:0; text-shadow:none; }
+    100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
+// Auto complete
+.ui-menu .ui-menu-item a,.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {
+    font-weight: normal;
+    margin: -1px;
+    text-align:left;
+    font:bold 10px Arial, Helvetica, sans-serif;
+}
+.ui-autocomplete-loading { background: white url("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/images/ui-anim_basic_16x16.gif") right center no-repeat; }
