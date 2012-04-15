@@ -84,8 +84,12 @@ update_target_city_name = (target_city_name) ->
   $("#rt_cap").html target_city_name
   $("#target_city").html target_city_name
 
+time_there_at = ->
+  console.log "Time here when it's " + $("#time_a").val() + " in city " + $("#target_city").html()
+
+
 # When page loads...
-$(document).ready ->
+$ ->
 
   time_now = new Date()
   citybDate = calcTime(offset)
@@ -104,3 +108,7 @@ $(document).ready ->
   setInterval (->
     update_time_periodically()
   ), 1000
+
+  # When calculate what time is it here when it's x pm in target city
+  $("#time_there").click ->
+    time_there_at()

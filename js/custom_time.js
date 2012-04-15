@@ -1,5 +1,5 @@
 (function() {
-  var calcTime, city_autocomplete_url, dayNames, make_hrs_human_readable, monthNames, offset, padNumber, processAndUpdateScreen, update_target_city_name, update_time_for_city_b, update_time_periodically;
+  var calcTime, city_autocomplete_url, dayNames, make_hrs_human_readable, monthNames, offset, padNumber, processAndUpdateScreen, time_there_at, update_target_city_name, update_time_for_city_b, update_time_periodically;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -102,7 +102,11 @@
     return $("#target_city").html(target_city_name);
   };
 
-  $(document).ready(function() {
+  time_there_at = function() {
+    return console.log("Time here when it's " + $("#time_a").val() + " in city " + $("#target_city").html());
+  };
+
+  $(function() {
     var citybDate, time_now;
     time_now = new Date();
     citybDate = calcTime(offset);
@@ -110,9 +114,12 @@
     $("#Date").html(dayNames[citybDate.getDay()] + " " + citybDate.getDate() + " " + monthNames[citybDate.getMonth()] + " " + citybDate.getFullYear());
     $("#Date1").html(dayNames[time_now.getDay()] + " " + time_now.getDate() + " " + monthNames[time_now.getMonth()] + " " + time_now.getFullYear());
     update_target_city_name("Tampa, FL, United States");
-    return setInterval((function() {
+    setInterval((function() {
       return update_time_periodically();
     }), 1000);
+    return $("#time_there").click(function() {
+      return time_there_at();
+    });
   });
 
 }).call(this);
