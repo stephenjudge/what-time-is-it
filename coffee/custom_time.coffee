@@ -50,10 +50,10 @@ update_time_for_city_b = (location) ->
 processAndUpdateScreen = (json) ->
   offset = json.data.time_zone[0].utcOffset
   target_city_time = calcTime(offset)
-  console.log "Time in target city: " + target_city_time
+  console.log "target city: " + target_city_time
   # Format Cityb Date into nice way
   $("#rt_cap").html $("#f_elem_city").val()
-  $("#f_elem_city").val "enter city name"
+  $("#f_elem_city").val ""                        #Reset target city input box
 
 
 # JSON URL
@@ -99,6 +99,7 @@ $(document).ready ->
   # Update time in current city
   $("#Date1").html dayNames[time_now.getDay()] + " " + time_now.getDate() + " " + monthNames[time_now.getMonth()] + " " + time_now.getFullYear()
 
+  $("#target_city").html $("#rt_cap").html()
   setInterval (->
     update_time_periodically()
   ), 1000

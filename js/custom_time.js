@@ -64,9 +64,9 @@
     var target_city_time;
     offset = json.data.time_zone[0].utcOffset;
     target_city_time = calcTime(offset);
-    console.log("Time in target city: " + target_city_time);
+    console.log("target city: " + target_city_time);
     $("#rt_cap").html($("#f_elem_city").val());
-    return $("#f_elem_city").val("enter city name");
+    return $("#f_elem_city").val("");
   };
 
   city_autocomplete_url = "http://gd.geobytes.com/AutoCompleteCity?callback=?";
@@ -107,6 +107,7 @@
     $("#lft_cap").html(geoplugin_city() + ", " + geoplugin_region() + ", " + geoplugin_countryCode());
     $("#Date").html(dayNames[citybDate.getDay()] + " " + citybDate.getDate() + " " + monthNames[citybDate.getMonth()] + " " + citybDate.getFullYear());
     $("#Date1").html(dayNames[time_now.getDay()] + " " + time_now.getDate() + " " + monthNames[time_now.getMonth()] + " " + time_now.getFullYear());
+    $("#target_city").html($("#rt_cap").html());
     return setInterval((function() {
       return update_time_periodically();
     }), 1000);
