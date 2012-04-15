@@ -1,5 +1,5 @@
 (function() {
-  var calcTime, city_autocomplete_url, dayNames, make_hrs_human_readable, monthNames, offset, padNumber, processAndUpdateScreen, update_time_for_city_b, update_time_periodically;
+  var calcTime, city_autocomplete_url, dayNames, make_hrs_human_readable, monthNames, offset, padNumber, processAndUpdateScreen, update_target_city_name, update_time_for_city_b, update_time_periodically;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -65,7 +65,7 @@
     offset = json.data.time_zone[0].utcOffset;
     target_city_time = calcTime(offset);
     console.log("target city: " + target_city_time);
-    $("#rt_cap").html($("#f_elem_city").val());
+    update_target_city_name($("#f_elem_city").val());
     return $("#f_elem_city").val("");
   };
 
@@ -97,17 +97,19 @@
     return jQuery("#f_elem_city").autocomplete("option", "delay", 100);
   });
 
+  update_target_city_name = function(target_city_name) {
+    $("#rt_cap").html(target_city_name);
+    return $("#target_city").html(target_city_name);
+  };
+
   $(document).ready(function() {
-    var citybDate, target_city_time, time_now;
+    var citybDate, time_now;
     time_now = new Date();
-    target_city_time = calcTime(offset);
-    citybDate = target_city_time;
-    citybDate.setDate(citybDate.getDate());
-    target_city_time = citybDate;
+    citybDate = calcTime(offset);
     $("#lft_cap").html(geoplugin_city() + ", " + geoplugin_region() + ", " + geoplugin_countryCode());
     $("#Date").html(dayNames[citybDate.getDay()] + " " + citybDate.getDate() + " " + monthNames[citybDate.getMonth()] + " " + citybDate.getFullYear());
     $("#Date1").html(dayNames[time_now.getDay()] + " " + time_now.getDate() + " " + monthNames[time_now.getMonth()] + " " + time_now.getFullYear());
-    $("#target_city").html($("#rt_cap").html());
+    update_target_city_name("Tampa, FL, United States");
     return setInterval((function() {
       return update_time_periodically();
     }), 1000);

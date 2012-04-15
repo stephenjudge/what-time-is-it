@@ -51,8 +51,7 @@ processAndUpdateScreen = (json) ->
   offset = json.data.time_zone[0].utcOffset
   target_city_time = calcTime(offset)
   console.log "target city: " + target_city_time
-  # Format Cityb Date into nice way
-  $("#rt_cap").html $("#f_elem_city").val()
+  update_target_city_name($("#f_elem_city").val())
   $("#f_elem_city").val ""                        #Reset target city input box
 
 
@@ -80,15 +79,16 @@ jQuery ->
 
   jQuery("#f_elem_city").autocomplete "option", "delay", 100
 
+update_target_city_name = (target_city_name) ->
+  #console.log "Target city: " + target_city_name
+  $("#rt_cap").html target_city_name
+  $("#target_city").html target_city_name
+
 # When page loads...
 $(document).ready ->
 
   time_now = new Date()
-  target_city_time = calcTime(offset)
-
-  citybDate = target_city_time
-  citybDate.setDate citybDate.getDate()
-  target_city_time = citybDate
+  citybDate = calcTime(offset)
 
   # Update name of current city on left side
   $("#lft_cap").html geoplugin_city() + ", " + geoplugin_region() + ", " + geoplugin_countryCode()
@@ -99,7 +99,8 @@ $(document).ready ->
   # Update time in current city
   $("#Date1").html dayNames[time_now.getDay()] + " " + time_now.getDate() + " " + monthNames[time_now.getMonth()] + " " + time_now.getFullYear()
 
-  $("#target_city").html $("#rt_cap").html()
+  # Default to tampa, fl until person enters something in
+  update_target_city_name("Tampa, FL, United States")
   setInterval (->
     update_time_periodically()
   ), 1000
