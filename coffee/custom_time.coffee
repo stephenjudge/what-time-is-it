@@ -40,13 +40,16 @@ padNumber = (n) ->
   (if n < 10 then "0" else "") + n
 
 make_hrs_human_readable = (h) ->
-  h = parseInt(h) - parseInt(12)  if h > 12
+  if h > 12
+    h = h-12
+  else if h == 12 or h == 0
+    h = 12
   h
 
-calcTime = (offset, aDate) ->
+calcTime = (tzoffset, aDate) ->
   d = aDate
   utc = d.getTime() + (d.getTimezoneOffset() * 60000)
-  nd = new Date(utc + (3600000 * offset))
+  nd = new Date(utc + (3600000 * tzoffset))
   nd
 
 update_time_for_city_b = (location) ->

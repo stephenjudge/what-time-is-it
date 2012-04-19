@@ -44,15 +44,19 @@
   };
 
   make_hrs_human_readable = function(h) {
-    if (h > 12) h = parseInt(h) - parseInt(12);
+    if (h > 12) {
+      h = h - 12;
+    } else if (h === 12 || h === 0) {
+      h = 12;
+    }
     return h;
   };
 
-  calcTime = function(offset, aDate) {
+  calcTime = function(tzoffset, aDate) {
     var d, nd, utc;
     d = aDate;
     utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-    nd = new Date(utc + (3600000 * offset));
+    nd = new Date(utc + (3600000 * tzoffset));
     return nd;
   };
 
